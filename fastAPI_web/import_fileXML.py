@@ -56,3 +56,5 @@ database.close()
 # columns = str(sheet.ncols)
 # rows = str(sheet.nrows)
 # print "I just imported " %2B columns %2B " columns and " %2B rows %2B " rows to MySQL!"
+
+

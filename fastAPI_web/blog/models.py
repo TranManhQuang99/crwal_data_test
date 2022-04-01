@@ -21,8 +21,8 @@ class User(Base):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(16), index=True)
-    email = Column(String(16), index=True)
+    name = Column(String(64), index=True)
+    email = Column(String(64), index=True)
     password = Column(String(64), index=True)
 
     Blogs = relationship("Blog", back_populates="creator")
@@ -32,8 +32,8 @@ class Timekeeping(Base):
     __tablename__ = 'timekeeping'
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(16), index=True)
-    timekeeping = Column(DateTime(timezone=True), server_default=func.now())
+    name = Column(String(64), index=True)
+    timekeeping = Column(DateTime(timezone=True), server_default=func.utcnow())
 
     # time_timekeeping = Column(datetime)
 

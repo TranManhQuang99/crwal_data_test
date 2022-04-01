@@ -39,4 +39,5 @@ def show(id: int, response: Response, db: Session):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if not blog:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'{id} is not available id')
+
     return blog

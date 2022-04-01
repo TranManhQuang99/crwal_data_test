@@ -108,6 +108,8 @@ def crawl_data_json(key_word):
         STT += 1
         browser.get(linkdin_url)
         sleep(3)
+        
+        #  Show all post
         try:
             see_more = browser.find_element(By.CLASS_NAME, 'artdeco-card__action')
             sleep(1)
@@ -123,7 +125,7 @@ def crawl_data_json(key_word):
             name_job = '////'
 
 
-
+        # get  name company
         name_company = info_div.find('div', class_="mt2")
         try:
             company = name_company.find('a').get_text().strip()
@@ -131,11 +133,13 @@ def crawl_data_json(key_word):
             info_loc = name_company.find_all('span')
             company = info_loc[0].find('span').get_text().strip()
 
+        # get location
         try:
             location = name_company.find('span', class_='jobs-unified-top-card__bullet').get_text().strip()
         except:
             location = '////'
 
+        # get content post
         try:
             content = page_source_company.find('div', id='job-details')
             post = content.find_all('span')[1].get_text().strip()
@@ -143,10 +147,12 @@ def crawl_data_json(key_word):
             content = page_source_company.find('div', class_='jobs-box__html-content')
             post = content.find('span').get_text().strip()
 
-
+        # get id post
         Number = re.findall('\d+', linkdin_url)
         ID = Number[0]
         
+        
+        # get time post
         time = page_source_company.find('span', class_='jobs-unified-top-card__posted-date').get_text().strip()
 
 

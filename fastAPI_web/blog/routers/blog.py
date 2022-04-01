@@ -1,11 +1,11 @@
 from fastapi import APIRouter
+import datetime
 from .. import schemas
 from typing import List
 from .. import schemas, database, models, oauth2
 from fastapi import FastAPI, Depends, status, Response, HTTPException, Depends
 from sqlalchemy.orm import Session
 from ..repository import blog
-from datetime import datetime
 
 
 router = APIRouter(
@@ -39,16 +39,39 @@ def show(id, response: Response, db: Session = Depends(database.get_db), current
     return blog.show(id, response, db)
 
 
-@router.post('/timekeeper',  status_code=status.HTTP_201_CREATED)
+@router.post('/timekeeper', status_code=status.HTTP_201_CREATED)
 def create_timekeeper(request: schemas.TimeKeeper, db: Session = Depends(database.get_db)):
-    new_timekeeper = models.Timekeeping(name=request.name, id=request.id)
+    new_timekeeper = models.Timekeeping(name=request.name)
     db.add(new_timekeeper)
     db.commit()
     db.refresh(new_timekeeper)
     return new_timekeeper
 
 
+@router.get('/timekeeper/{name}', status_code=200)
+def show_timekeeper(name, db: Session = Depends(database.get_db)):
+    # return blog.show(id, response, db)
+    now = datetime.datetime.now()
+    today8h30am = now.replace(hour=8, minute=30, second=0,microsecond=0)
+    show_timekeep = db.query(models.Timekeeping).filter(models.Timekeeping.name == name).first()
+    if not show_timekeep:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'{name} is not available ')
+
+    check_timekeeper = show_timekeep.timekeeping > today8h30am
+    return check_timekeeper
 
 
-
+# now = datetime.now()
+# time_string = now.strftime("%Y-%m-%d %H:%M:%S")
+# print(time_string)
+# ĐẦU RA
+# >>> import datetime
+# >>> now = datetime.datetime.now()
+# >>> today8am = now.replace(hour=8, minute=0, second=0, microsecond=0)
+# >>> now < today8am
+# True
+# >>> now == today8am
+# False
+# >>> now > today8am
+# False
 

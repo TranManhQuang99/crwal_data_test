@@ -2,6 +2,7 @@ from fastapi import HTTPException, status, Response
 from sqlalchemy.orm import Session
 from ..hashsing import Hash
 from .. import models, schemas
+import mysql.connector
 
 
 def create_user(request: schemas.User, db: Session):

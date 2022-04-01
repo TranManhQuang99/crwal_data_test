@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 from typing import List, Optional
 
@@ -35,5 +37,16 @@ class TokenData(BaseModel):
 
 
 class TimeKeeper(BaseModel):
-    id: int
     name: str
+
+    class Config:
+        orm_mode = True
+
+
+class Show_TimeKeeper(BaseModel):
+    # id: int
+    # name: str
+    timekeeping: datetime
+
+    class Config:
+        orm_mode = True
